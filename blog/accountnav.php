@@ -2,6 +2,7 @@
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
+    <!-- <img src="https://icons.iconarchive.com/icons/emey87/social-button/16/blog-icon.png" width="16" height="16" alt="Blog Icon"> -->
             <img src="https://icons.iconarchive.com/icons/emey87/social-button/32/blog-icon.png" 
                  width="32" height="32" alt="Blog Icon"> Blog
         </a>
@@ -13,7 +14,7 @@
         <div class="collapse navbar-collapse" id="navbarColor04">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Home
+                    <a class="nav-link active" href="index.php">Home
                         <span class="visually-hidden">(current)</span>
                     </a>
                 </li>

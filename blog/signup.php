@@ -1,4 +1,40 @@
 
+<?php 
+if (isset($_POST['save'])) 
+{
+    include 'connection.php';
+ 
+    $username = $_POST['username'];
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = $_POST['password'];
+    $birthdate = $_POST['birthdate'];
+    $country = $_POST['country'];
+    $password = password_hash($password, PASSWORD_DEFAULT);
+    $sqlinsert = "INSERT INTO users (username, email, password, birthdate, country) VALUES ('$username', '$email', '$password', '$birthdate', '$country')";
+
+    if (mysqli_query($conn, $sqlinsert)) {
+        echo " Check your email for confirmation";
+        /* // the message
+        $msg = "Welcome to our blog! <br> Please confirm your Email address by clicking the link below\n http://localhost/blog/confirm.php?email=$email";
+
+        // use wordwrap() if lines are longer than 70 characters
+        $msg = wordwrap($msg, 70);
+
+        // send email
+        if (mail($email, "Account Confirmation", $msg)) {
+            header("Location: signin.php");
+            exit();
+        } else {
+            echo "Error: Unable to send confirmation email.";
+        } */
+       header("Location: signin.php");
+    } else {
+        echo "Error: " . $sqlinsert . "<br>" . mysqli_error($conn);
+    exit();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,9 +42,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Create Account</title>
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="https://icons.iconarchive.com/icons/emey87/social-button/16/blog-icon.png" width="16"
-        height="16">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <img src="https://icons.iconarchive.com/icons/emey87/social-button/16/blog-icon.png" width="16" height="16" alt="Blog Icon"> -->
 </head>
 
 <body>
@@ -31,7 +66,7 @@
 
                     <label for="email" class="form-label mt-4">Email</label>
                     <div class="col-sm-10">
-                        <input type="text" name="email" class="form-control" id="email" placeholder="email@example.com">
+                        <input type="email" name="email" class="form-control" id="email" placeholder="email@example.com">
                         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                             else.</small>
                     </div>
@@ -313,35 +348,4 @@
 
 </html>
 
-<?php 
-if (isset($_POST['save'])) 
-{
-    include'connection.php';
- 
 
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $birthdate = $_POST['birthdate'];
-    $country = $_POST['country'];
-    $password = md5($password. "blog");
-    $sqlinsert = "INSERT INTO users (username, email, password, birthdate, country) VALUES ('$username', '$email', '$password', '$birthdate', '$country')";
-
-    if (mysqli_query($conn, $sqlinsert)) {
-        echo " Check your email for confirmation";
-
-        // the message
-        $msg = "Welcome to our blog! <br> Please confirm your Email address hi clicking the link below\n http://localhost/blog/confirm.php?email=$email";
-
-        // use wordwrap() if lines are longer than 70 characters
-        $msg = wordwrap($msg, 70);
-
-        // send email
-        mail($email, "Account Confirmation", $msg);
-    } else {
-        echo "Error: " . $sqlinsert . "<br>" . mysqli_error($conn);
-    }
-    header("Location: signin.php");
-
-}
-?>

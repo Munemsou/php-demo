@@ -1,3 +1,42 @@
+<?php
+if (isset($_POST['save'])) {
+    include 'connection.php';
+
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $remember = isset($_POST['remember']) ? $_POST['remember'] : '';
+    // Hash the password (assuming the database already has hashed passwords)
+    // Use prepared statements to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $stmt->execute();
+   
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            $cookie_name = "username";
+            $cookie_value = $username;
+            if (isset($_POST['remember'])) {
+                // Set cookie for 30 days if "Remember Me" is checked
+                setcookie($cookie_name, $cookie_value, time() + 86400 * 30, "/");
+            } else {
+                // Set cookie for 1 hour if not
+                setcookie($cookie_name, $cookie_value, time() + 3600, "/");
+            }
+
+            // Redirect to homepage
+            header("Location: index.php");
+           
+            exit;
+        }
+    } else {
+        echo "Invalid username or password";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,7 +77,7 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" name="save" class="btn btn-outline-dark btn-lg mt-3">Sign in</button>
+                <button type="submit" name="save" class="btn btn-outline-dark btn-lg mt-3">Log in</button>
             </fieldset>
         </form>
     </div>
@@ -48,39 +87,4 @@
 
 </html>
 
-<?php
-if (isset($_POST['save'])) {
-    include 'connection.php';
 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $remember = $_POST['remember'];
-    // Hash the password (assuming the database already has hashed passwords)
-    $hashed_password = md5($password."blog"); // Replace this with a better hash in the future.
-
-    // Use prepared statements to prevent SQL injection
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = 'hashed_password'";
-    
-    
-    $result = mysqli_query($conn, $sql);
-    $rowno = mysqli_num_rows($result);
-    if ($rowno == 0) {
-        echo "Invalid username or password";
-    } else {
-        $cookie_name = "username";
-        $user2 = $_post['username'];
-        $cookie_value = $user2;
-
-        if (isset($_POST['remember'])) {
-            // Set cookie for 30 days if "Remember Me" is checked
-            setcookie($cookie_name, $cookie_value, time() + 86400 * 30, "/");
-        } else {
-            // Set cookie for 1 hour if not
-            setcookie($cookie_name, $cookie_value, time() + 3600, "/");
-        }
-
-        // Redirect to homepage
-        header("Location: index.php");
-    }
-}
-?>
