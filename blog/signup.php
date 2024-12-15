@@ -13,8 +13,8 @@ if (isset($_POST['save']))
     $sqlinsert = "INSERT INTO users (username, email, password, birthdate, country) VALUES ('$username', '$email', '$password', '$birthdate', '$country')";
 
     if (mysqli_query($conn, $sqlinsert)) {
-        echo " Check your email for confirmation";
-        /* // the message
+        /*  echo " Check your email for confirmation";
+       // the message
         $msg = "Welcome to our blog! <br> Please confirm your Email address by clicking the link below\n http://localhost/blog/confirm.php?email=$email";
 
         // use wordwrap() if lines are longer than 70 characters
