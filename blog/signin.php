@@ -70,12 +70,16 @@ if (isset($_POST['save'])) {
                     </div>
 
                     <!-- Remember Me -->
-                    <div class="form-check form-switch col-sm-10">
+                    <div class="form-check form-switch col-sm-10 m-2">
                         <input class="form-check-input" type="checkbox" name="remember" id="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
                 </div>
 
+                <!-- Forgot Password -->
+                 <div >
+                    <a class="link-primary link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover" href="recover.php">Forgot your password?</a>
+                </div>
                 <!-- Submit Button -->
                 <button type="submit" name="save" class="btn btn-outline-dark btn-lg mt-3">Log in</button>
             </fieldset>
